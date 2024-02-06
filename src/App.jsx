@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import ShoppingItem from './components/Shopping';
-import { Container, Row, Col } from 'react-bootstrap';
+import Cart from './components/Cart';
+import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Make sure to import Routes
+
 import daawatrozanasuper399 from './assets/daawatrozanasuper399.jpg';
 import fortune110 from './assets/fortune110.jpg';
 import nutralwallnut498 from './assets/nutralwallnut498.jpg';
@@ -23,17 +26,39 @@ function App() {
   };
 
   return (
-    <Container>
-      <h1>E-Commerce App</h1>
-      <Row>
-        {items.map((item) => (
-          <Col key={item.id} lg={3} md={4} sm={6}>
-            <ShoppingItem item={item} addToCart={addToCart} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <Router>
+      <Container>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand as={Link} to="/">E-Commerce App</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
+        <Routes>
+          <Route path="/" element={<Home items={items} addToCart={addToCart} />} />
+          <Route path="/cart" element={<Cart items={items.filter((item) => item.inCart)} />} />
+        </Routes>
+      </Container>
+    </Router>
   );
 }
+
+const Home = ({ items, addToCart }) => (
+  <>
+    <h1>Home Page</h1>
+    <Row>
+      {items.map((item) => (
+        <Col key={item.id} lg={3} md={4} sm={6}>
+          <ShoppingItem item={item} addToCart={addToCart} />
+        </Col>
+      ))}
+    </Row>
+  </>
+);
 
 export default App;
