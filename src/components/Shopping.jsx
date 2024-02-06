@@ -1,12 +1,11 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-const ShoppingItem = ({ item }) => {
-    const { id, title, price, description, image } = item;
+const ShoppingItem = ({ item, addToCart }) => {
+  const { id, title, price, description, image, inCart } = item;
 
-  const addToCart = () => {
-    // Implement your logic to add item to the cart
-    console.log(`Item ${id} added to cart`);
+  const handleAddToCart = () => {
+    addToCart(id);
   };
 
   return (
@@ -16,8 +15,8 @@ const ShoppingItem = ({ item }) => {
         <Card.Title>{title}</Card.Title>
         <Card.Text>Description: {description}</Card.Text>
         <Card.Text>Price: ₹{price}</Card.Text>
-        <Button variant="primary" onClick={addToCart}>
-          Add to Cart
+        <Button variant="primary" onClick={handleAddToCart} disabled={inCart}>
+          {inCart ? 'Go to Cart' : 'Add to Cart'}
         </Button>
       </Card.Body>
     </Card>
